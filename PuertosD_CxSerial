@@ -1,0 +1,140 @@
+/*
+ * UNIVERSIDAD TÉCNICA DEL NORTE
+ * FACULTAD DE INGENIERÍA EN CIENCIAS APLICADAS
+ * CARRERA DE INGENIERÍA EN TELECONMUNICACIONES
+ * SISTEMA EMBEBIDOS 
+ * 
+ * Nombre: Carolina Quinatoa 
+ * Fecha: 25 de Novimebre del 2020
+ * Laboratorio N°1
+ */
+#include <LiquidCrystal.h>                          //incluimos la libreria para trabajar con la pantalla LCD
+LiquidCrystal lcd(A0, A1, A2, A3, A4, A5);          //declaramos los pines 
+//(RS, E, D4, D5, D6, D7)
+
+#include <Keypad.h>;                                //incluir libreria para trabajar con teclado matricial
+char usuario1[]="ca900813";                        //usuario comprobación
+char usuario2[]="aj881112";
+char usuario3[]="ja890109";
+char usuario4[]="cq970408";
+char error[]="";
+char codigo[8];
+                                                    //almacenamiento de la contraseña digitada
+int digito = 0;   
+int z;                                  
+
+const byte filas = 4;                               //numero de filas del teclado
+const byte columnas = 4;                            //numero de columnas del teclado
+char teclas[filas][columnas] =                      
+{
+  {'7', '8', '9','a'},
+  {'4', '5', '6','b'},
+  {'1', '2', '3','c'},
+  {'d', '0', 'j','q'}
+};
+
+byte pinsFilas[filas] = {9, 8,7,6};           //pines donde van conectadas las filas
+byte pinsCol[columnas]={5,4,3,2};            //pines donde van conectadas las columnas
+
+Keypad teclado = Keypad(makeKeymap(teclas), pinsFilas, pinsCol, filas, columnas); 
+
+void setup()
+{
+  lcd.begin(16, 2);                                 //tamaño (#columnas, #filas) de la pantalla LDC que voy a usar
+  pinMode(A0, OUTPUT);                              //definimos los pines analogicos como salidas digitales
+  pinMode(A1, OUTPUT);
+  pinMode(A2, OUTPUT);
+  pinMode(A3, OUTPUT);
+  pinMode(A4, OUTPUT);
+  pinMode(A5, OUTPUT);
+  pinMode(11, OUTPUT);
+  pinMode(12, OUTPUT);
+  lcd.clear();                                      
+  lcd.setCursor(0, 0);                              
+  lcd.print("Ingrese su clave");                    
+  delay (400);
+  lcd.clear();  
+}
+
+void loop()
+{
+  char tecla = teclado.getKey();                    //guardamos el caracter de la tecla presionada en la variable tecla
+  if (tecla != NO_KEY){
+    
+    codigo[digito] = tecla;                         //almacena en la posicion "digito" de "codigo" el caracter de la "tecla" presionada
+    lcd.setCursor(digito + 5, 2);                   
+    lcd.print('*');                                 //se imprime "*" cada vez que se oprime una tecla
+    digito = digito + 1;   
+           
+    if (digito == 8) {
+        if (z=1) {
+        if (codigo[0] == usuario1[0] && codigo[1] == usuario1[1] && codigo[2] == usuario1[2] && codigo[3] == usuario1[3]&&codigo[4] == usuario1[4] && codigo[5] == usuario1[5] && codigo[6] == usuario1[6] && codigo[7] == usuario1[7]) //si el "codigo" digitado es igual a la "contraseña"
+      {   z=1;
+        delay(500);                               
+        lcd.setCursor(0, 0);                        
+        lcd.print(" Bienvenido");              
+        lcd.setCursor(0, 1);                        
+        lcd.print(" Carlos Arias");              
+        delay(3000);    
+                                  
+        lcd.clear();                                
+           
+      }
+     
+      if (codigo[0] == usuario2[0] && codigo[1] == usuario2[1] && codigo[2] == usuario2[2] && codigo[3] == usuario2[3]&&codigo[4] == usuario2[4] && codigo[5] == usuario2[5] && codigo[6] == usuario2[6] && codigo[7] == usuario2[7]) //si el "codigo" digitado es igual a la "contraseña"
+      { z=1;
+        delay(500);                                 
+        lcd.setCursor(0, 0);                        
+        lcd.print(" Bienvenido");              
+        lcd.setCursor(0, 1);                        
+        lcd.print(" Andres Juarez");              
+        delay(3000);   
+                                    
+        lcd.clear();                                
+                 
+      }
+      
+    if (codigo[0] == usuario3[0] && codigo[1] == usuario3[1] && codigo[2] == usuario3[2] && codigo[3] == usuario3[3]&&codigo[4] == usuario3[4] && codigo[5] == usuario3[5] && codigo[6] == usuario3[6] && codigo[7] == usuario3[7]) //si el "codigo" digitado es igual a la "contraseña"
+      { z=1;
+        delay(500);                                 
+        lcd.setCursor(0, 0);                        
+        lcd.print(" Bienvenido");              
+        lcd.setCursor(0, 1);                         
+        lcd.print(" Javier Andrada ");              
+        delay(3000);      
+                                   
+        lcd.clear();                                
+        }       
+
+    if (codigo[0] == usuario4[0] && codigo[1] == usuario4[1] && codigo[2] == usuario4[2] && codigo[3] == usuario4[3]&&codigo[4] == usuario4[4] && codigo[5] == usuario4[5] && codigo[6] == usuario4[6] && codigo[7] == usuario4[7]) //si el "codigo" digitado es igual a la "contraseña"
+      { z=1;
+        delay(500);                                 
+        lcd.setCursor(0, 0);                        
+        lcd.print(" Bienvenida");              
+        lcd.setCursor(0, 1);                          
+        lcd.print(" Carolina Quinatoa ");              
+        delay(3000);                 
+                      
+        lcd.clear();                                
+        }
+        }
+        if (codigo[0] != error[0] && codigo[1] != error[1] && codigo[2] != error[2] && codigo[3] != error[3]&&codigo[4] != error[4] && codigo[5] != error[5] && codigo[6] != error[6] && codigo[7] != error[7]) //si el "codigo" digitado es igual a la "contraseña"
+          {
+          delay(500);                                 //esperamos medio segundo
+        
+        lcd.setCursor(0, 2);                        //ubicamos el cursor en la (columna, fila) convenientemente
+        lcd.print("Clave incorrecta");              //imprimimos el letrero diciendo clave incorrecta
+        delay(500); 
+        lcd.clear(); 
+        lcd.setCursor(0, 0);                          //ubicamos el cursor en la (columna, fila) convenientemente
+       lcd.print("Ingrese su clave");                //volvemos a imprimir el letrero pidiendo la clave
+        delay(600);                                //esperamos 2 segundos
+        lcd.clear(); 
+        }
+        digito=0;                                 //reseteamos la variable digito
+        
+       
+       }   
+      }
+      
+}
